@@ -1,0 +1,28 @@
+version: "2"
+
+services:
+  tor:
+    image: goldy/tor-hidden-service
+    links:
+      - hello
+    environment:
+        # Set mapping ports
+        HELLO_PORTS: 80:80
+        # Set private key
+        HELLO_KEY: |
+            -----BEGIN RSA PRIVATE KEY-----
+            Your Private Key Here!
+            -----END RSA PRIVATE KEY-----
+
+  hello:
+    image: daknob/torpaste
+    hostname: hello
+    volumes_from:
+      - data
+  data:
+    image: tianon/true
+    volumes:
+      - hello_data:/torpaste/pastes/
+volumes:
+  hello_data:
+    driver: local
